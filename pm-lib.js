@@ -27,6 +27,10 @@ $(function(){
 			$(".pm_"+randStr).hide();
 		}
 	});
+	$('select').each(function(){
+		$(this).customized();
+	});
+	
 	$(document).on('click', '.generateTitle', function(e){
  		e.stopPropagation();
 		$('.generatSelectors').hide();

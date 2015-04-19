@@ -4,12 +4,6 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="pm-lib-min.js"></script>
 <link type="text/css" rel="stylesheet" href="pm-lib-min.css"/>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("#S1").customized();
-		$("#S2").customized();
-	});
-</script>
 </head>
 <body>
 <select id="S1">
