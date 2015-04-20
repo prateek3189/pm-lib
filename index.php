@@ -21,8 +21,5 @@
 	<option value="V13" selected="selected">Val13</option>
 	<option value="V14">Val14</option>
 </select>
-
-
-
 </body>
 </html>

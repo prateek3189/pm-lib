@@ -3,24 +3,49 @@ $(function(){
 		customized: function() {
 			var randStr	=	Math.random().toString().substr(2,8);
 			var thisID		=	this.addClass("pm_"+randStr);
-			var thisWidth	=	this.css("width");
-			var selectHTML	=	'';
-			selectHTML += '<div class="generateSelect" id="select_'+randStr+'"><span class="generateTitle" id="generated_'+randStr+'" dir="'+randStr+'">Select</span><ul class="generatSelectors" dir="'+randStr+'" id="selector_'+randStr+'">';
+			
+			//Create parent - Add elements in this parent
+			var parentDiv			=	document.createElement("div");
+			parentDiv.className		=	'generateSelect';
+			parentDiv.id			=	'select_'+randStr;
+			
+			//Create children title span
+			var titleSpan			=	document.createElement("span");
+			titleSpan.className		=	'generateTitle';
+			titleSpan.id			=	'generated_'+randStr;
+			titleSpan.setAttribute("dir", randStr);
+			titleSpan.innerHTML		=	'Select';	
+			parentDiv.appendChild(titleSpan);
+			
+			//Create List of options
+			var ulList	=	document.createElement("ul");
+			ulList.className		=	'generatSelectors';
+			ulList.id			=	'selector_'+randStr;
+			ulList.setAttribute("dir", randStr);
+			
+			//Create inner options
 			var index	=	0;
 			var selectTitle	=	'';
 			$(this).children("option").each(function(){
 				var liVal		=	$(this).val();
 				var liHTML		=	$(this).html();
-				selectHTML	+=	'<li dir="'+liVal+'" value="'+index+'"';
+				
+				var liList	=	document.createElement("li");
+				liList.setAttribute("dir", liVal);
+				liList.setAttribute("value", index);
 				if($(this).prop("selected")){
-					selectHTML	+=	'class="selected"';	
+					liList.setAttribute("class", 'selected');
 					selectTitle	=	liHTML;
 				}
-				selectHTML	+=	'>'+liHTML+'</li>';
-				index++;				
+				liList.innerHTML		=	liHTML;
+				ulList.appendChild(liList);
+				index++;
+				
+				
 			});
-			selectHTML	+=	'</ul></div>';
-			$(".pm_"+randStr).after(selectHTML);
+			
+			parentDiv.appendChild(ulList);
+			$(".pm_"+randStr).after(parentDiv);
 			if(selectTitle != ''){
 				$("#generated_"+randStr).html(selectTitle);
 			}
@@ -32,8 +57,7 @@ $(function(){
 	});
 	
 	$(document).on('click', '.generateTitle', function(e){
- 		e.stopPropagation();
-		$('.generatSelectors').hide();
+ 		$('.generatSelectors').hide();
 		var thisID			=	$(this).attr("dir");
 		var thisSelector	=	$("#selector_"+thisID);
 		if(thisSelector.is(":visible")){
@@ -48,7 +72,6 @@ $(function(){
 	});
 	
 	$(document).on('click', '.generatSelectors li', function(e){
-		e.stopPropagation();
 		var selectorID	=	$(this).parent().attr("dir");
 		$('#selector_'+selectorID+' li').removeClass("selected");
 		$(this).addClass("selected");
@@ -60,6 +83,9 @@ $(function(){
 	});
 
 });
-$(document).on("click",function(){
-	$('.generatSelectors').hide();
+$(document).on("click",function(e){
+	var target	=	e.target.className;
+	if(target != 'generateTitle'){
+		$('.generatSelectors').hide();
+	}
 });
